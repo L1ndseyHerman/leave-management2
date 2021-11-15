@@ -1,34 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace leave_management2.Data
+namespace leave_management2.Models
 {
-    public class LeaveHistory
+    public class LeaveHistoryVM
     {
-        [Key]
         public int Id { get; set; }
-
-        [ForeignKey("RequestingEmployeeId")]
-        //  This is from the IdentityUser, Employee inherits it:
-        public Employee RequestingEmployee { get; set; }
+        public EmployeeVM RequestingEmployee { get; set; }
         public string RequestingEmployeeId { get; set; }
+        [Required]
         public DateTime StartDate { get; set; }
+        [Required]
         public DateTime EndDate { get; set; }
-        [ForeignKey("LeaveTypeId")]
-        public LeaveType LeaveType { get; set; }
+        public DetailsLeaveTypeVM LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
+        public IEnumerable<SelectListItem> LeaveTypes { get; set; }
         public DateTime DateRequested { get; set; }
         public DateTime DateActioned { get; set; }
         //  The "?" means null is allowed, could be true, false, or null (pending).
         public bool? Approved { get; set; }
         //  Want to know which other employee approved your leave.
-        [ForeignKey("ApprovedById")]
-        public Employee ApprovedBy { get; set; }
+        public EmployeeVM ApprovedBy { get; set; }
         public string ApprovedById { get; set; }
-
     }
 }

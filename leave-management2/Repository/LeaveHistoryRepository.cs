@@ -1,5 +1,6 @@
 ﻿using leave_management2.Contracts;
 using leave_management2.Data;
+using leave_management2.Data.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
