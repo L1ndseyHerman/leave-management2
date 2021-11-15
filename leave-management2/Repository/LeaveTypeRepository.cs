@@ -20,22 +20,30 @@ namespace leave_management2.Repository
 
         public bool Create(LeaveType entity)
         {
-            throw new NotImplementedException();
+            _db.LeaveTypes.Add(entity);
+            return Save();
         }
 
         public bool Delete(LeaveType entity)
         {
-            throw new NotImplementedException();
+            _db.LeaveTypes.Remove(entity);
+            return Save();
         }
 
         public ICollection<LeaveType> FindAll()
         {
-            throw new NotImplementedException();
+            //  Gets a List (like ArrayList in Java) of everything in the table.
+            //  Wait, why is it "var"? Doesn't C# need to be strongly-typed?
+            var leaveTypes = _db.LeaveTypes.ToList();
+            return leaveTypes;
         }
 
         public LeaveType FindById(int id)
         {
-            throw new NotImplementedException();
+            //  "Find()" is like "indexOf()".
+            //  Could do "FirstOfDefault()" like at OnShift, but he doesn't tho.
+            var leaveType = _db.LeaveTypes.Find(id);
+            return leaveType;
         }
 
         public ICollection<LeaveType> GetEmployeesByLeaveType(int id)
@@ -45,12 +53,16 @@ namespace leave_management2.Repository
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            var changes = _db.SaveChanges();
+            //  Should always change 1+ things, check if that's true:
+            return changes > 0;
         }
 
         public bool Update(LeaveType entity)
         {
-            throw new NotImplementedException();
+            _db.LeaveTypes.Update(entity);
+            //  Did this save correctly? Return T/F.
+            return Save();
         }
     }
 }
