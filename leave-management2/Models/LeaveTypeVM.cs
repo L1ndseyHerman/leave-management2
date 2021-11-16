@@ -12,6 +12,8 @@ namespace leave_management2.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        //  Normally, it displays the variable name in the webpage. This adds a space btw "DateCreated".
+        [Display(Name="Date Created")]
         public DateTime DateCreated { get; set; }
     }
 
