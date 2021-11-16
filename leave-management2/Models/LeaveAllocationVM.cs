@@ -15,8 +15,7 @@ namespace leave_management2.Models
         public DateTime DateCreated { get; set; }
         public EmployeeVM Employee { get; set; }
         //  Joining on the EmployeeId:
-        public string EmployeeId { get; set; }
-        public DetailsLeaveTypeVM LeaveType { get; set; }
+        public LeaveTypeVM LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
         //  Below is a drop-down-list of all employees in the database!
         public IEnumerable<SelectListItem> Employees { get; set; }

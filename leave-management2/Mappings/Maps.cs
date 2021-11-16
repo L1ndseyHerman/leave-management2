@@ -14,8 +14,7 @@ namespace leave_management2.Mappings
         public Maps()
         {
             //  Goes in 1-direction: LeaveType to DetailsLeaveTypeVM, not the other way. ReverseMap() makes it go both ways!
-            CreateMap<LeaveType, DetailsLeaveTypeVM>().ReverseMap();
-            CreateMap<LeaveType, CreateLeaveTypeVM>().ReverseMap();
+            CreateMap<LeaveType, LeaveTypeVM>().ReverseMap();
             CreateMap<LeaveHistory, LeaveHistoryVM>().ReverseMap();
             CreateMap<LeaveAllocation, LeaveAllocationVM>().ReverseMap();
             CreateMap<Employee, EmployeeVM>().ReverseMap();
