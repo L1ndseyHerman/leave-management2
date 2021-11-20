@@ -34,7 +34,14 @@ namespace leave_management2.Controllers
         // GET: LeaveTypesController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            //  If this row does not exist in the table:
+            if (!_repo.isExists(id))
+            {
+                return NotFound();
+            }
+            var leavetype = _repo.FindById(id);
+            var model = _mapper.Map<LeaveTypeVM>(leavetype);
+            return View(model);
         }
 
         // GET: LeaveTypesController/Create
