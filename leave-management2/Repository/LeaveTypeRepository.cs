@@ -51,6 +51,16 @@ namespace leave_management2.Repository
             throw new NotImplementedException();
         }
 
+        public bool isExists(int id)
+        {
+            //  This would check if there are any rows in the table:
+            //var exists = _db.LeaveTypes.Any();
+
+            //  q = a row. Does any row have an id that matches the id parameter passed into the method? Return t/f.
+            var exists = _db.LeaveTypes.Any(q => q.Id == id);
+            return exists;
+        }
+
         public bool Save()
         {
             var changes = _db.SaveChanges();
