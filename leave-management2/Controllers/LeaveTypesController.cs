@@ -124,21 +124,42 @@ namespace leave_management2.Controllers
         // GET: LeaveTypesController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var leavetype = _repo.FindById(id);
+            if (leavetype == null)
+            {
+                return NotFound();
+            }
+            var isSuccess = _repo.Delete(leavetype);
+            if (!isSuccess)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: LeaveTypesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        //  Only need the model so that it has another parameter, otherwise C# doesn't know if it should call this Delete method or the other one.
+        public ActionResult Delete(int id, LeaveTypeVM model)
         {
             try
             {
+                var leavetype = _repo.FindById(id);
+                if (leavetype == null)
+                {
+                    return NotFound();
+                }
+                var isSuccess = _repo.Delete(leavetype);
+                if (!isSuccess)
+                {
+                    return View(model);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
     }
