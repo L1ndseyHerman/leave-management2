@@ -79,6 +79,8 @@ namespace leave_management2.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                //  "Input.RememberMe" keeps the user logged in even after they x-out of the webpage (Cookies?)
+                //  LockoutOnFailure would stop the user from making more attempts if they guess their password wrong (I'm assuming 3 times).
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
