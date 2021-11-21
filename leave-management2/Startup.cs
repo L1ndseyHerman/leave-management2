@@ -43,7 +43,11 @@ namespace leave_management2
             //  New! Need for the AutoMapper:
             services.AddAutoMapper(typeof(Maps));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //  This could be Employee, but keeping IdentityUser.
+            //  Could require password strength or something, many options are allowed, it just came with one.
+            //  Disabling it here, since not actually sending confirmation emails in this course.
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

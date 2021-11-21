@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace leave_management2.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext2 : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext2(DbContextOptions<ApplicationDbContext2> options)
             : base(options)
         {
         }
