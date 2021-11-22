@@ -2,6 +2,7 @@
 using leave_management2.Contracts;
 using leave_management2.Data;
 using leave_management2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace leave_management2.Controllers
 {
+    //  This keyword prevents un-logged-in users from being able to access this url route!
+    //  Can specify which role(s) are able to access here too:
+    [Authorize(Roles = "Administrator")]
     public class LeaveTypesController : Controller
     {
         //  U added this, most methods came from the read/write option:
