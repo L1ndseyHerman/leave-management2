@@ -91,6 +91,8 @@ namespace leave_management2.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //  New! Auto-assigning ppl as Employees, not doing more than one Administrator for this project.
+                    _userManager.AddToRoleAsync(user, "Employee").Wait();
                     _logger.LogInformation("User created a new account with password.");
 
                     //  Got rid of lots of code here bec not verifying email.

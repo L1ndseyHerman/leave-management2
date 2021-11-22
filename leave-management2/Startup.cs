@@ -47,14 +47,24 @@ namespace leave_management2
             //  Could require password strength or something, many options are allowed, it just came with one.
             //  Disabling it here, since not actually sending confirmation emails in this course.
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            //  Starting to seed the database w "AddRoles":
             services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        //  New! Added more Configure() params.
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +84,9 @@ namespace leave_management2
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //  New! Calling the static SeedData.cs class here wo even creating an instance of it first!
+            SeedData.Seed(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {
