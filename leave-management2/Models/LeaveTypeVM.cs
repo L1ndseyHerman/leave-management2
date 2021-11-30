@@ -13,6 +13,12 @@ namespace leave_management2.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        //  I think this is the label and the Range is the Selector?
+        [Display(Name = "Default Number Of Days")]
+        //  Takes a min and a max:
+        [Range(1, 25, ErrorMessage = "Please Enter A Valid Number")]
+        public int MyProperty { get; set; }
         //  Normally, it displays the variable name in the webpage. This adds a space btw "DateCreated".
         [Display(Name="Date Created")]
         //  The "?" here is bec u want to wait to set it, will be null at the form, and then u set it to the current date later.

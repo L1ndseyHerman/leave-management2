@@ -22,5 +22,7 @@ namespace leave_management2.Data
         [ForeignKey("LeaveTypeId")]
         public LeaveType LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
+        //  This is like 2021 ten vacation days, makes sure u don't get 10 more until 2022.
+        public int Period { get; set; }
     }
 }
