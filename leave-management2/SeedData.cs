@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using leave_management2.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,22 @@ namespace leave_management2
     public static class SeedData
     {
         //  This method is public, gets called in Startup.cs. The other two are private, only get called by this method. 
-        public static void Seed(UserManager<IdentityUser> userManager,
+
+        //  Replacing all <Employee> with <Employee> in this class:
+        public static void Seed(UserManager<Employee> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
         }
 
-        private static void SeedUsers(UserManager<IdentityUser> userManager)
+        private static void SeedUsers(UserManager<Employee> userManager)
         {
             //  This returns the user (object) instead of a boolean.
             if (userManager.FindByNameAsync("admin").Result == null)
             {
                 //  Yeah, this really looks like a JS object!
-                var user = new IdentityUser
+                var user = new Employee
                 {
                     UserName = "admin@localhost.com",
                     Email = "admin@localhost.com"

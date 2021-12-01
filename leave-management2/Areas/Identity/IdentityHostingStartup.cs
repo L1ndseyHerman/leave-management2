@@ -19,7 +19,7 @@ namespace leave_management2.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("ApplicationDbContextConnection")));
 
-                //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                //services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
                     //.AddEntityFrameworkStores<ApplicationDbContext2>();
             });
         }

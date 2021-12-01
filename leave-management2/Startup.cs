@@ -43,13 +43,15 @@ namespace leave_management2
             //  New! Need for the AutoMapper:
             services.AddAutoMapper(typeof(Maps));
 
-            //  This could be Employee, but keeping IdentityUser.
+            //  This could be Employee, but keeping Employee.
             //  Could require password strength or something, many options are allowed, it just came with one.
             //  Disabling it here, since not actually sending confirmation emails in this course.
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
 
             //  Starting to seed the database w "AddRoles":
-            services.AddDefaultIdentity<IdentityUser>()
+
+            //  In vid 72, this suddenly needs to go from <Employee> to <Employee>, idk why. Also needs to be <Employee> some other places this class.
+            services.AddDefaultIdentity<Employee>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
@@ -62,7 +64,7 @@ namespace leave_management2
         public void Configure(
             IApplicationBuilder app, 
             IWebHostEnvironment env,
-            UserManager<IdentityUser> userManager,
+            UserManager<Employee> userManager,
             RoleManager<IdentityRole> roleManager
             )
         {
