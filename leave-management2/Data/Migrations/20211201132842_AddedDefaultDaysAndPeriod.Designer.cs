@@ -10,7 +10,7 @@ using leave_management2.Data;
 namespace leave_management2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211130163950_AddedDefaultDaysAndPeriod")]
+    [Migration("20211201132842_AddedDefaultDaysAndPeriod")]
     partial class AddedDefaultDaysAndPeriod
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -331,6 +331,12 @@ namespace leave_management2.Data.Migrations
 
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DefaultDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

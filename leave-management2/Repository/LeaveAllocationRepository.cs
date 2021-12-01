@@ -17,6 +17,14 @@ namespace leave_management2.Repository
             _db = db;
         }
 
+        public bool CheckAllocation(int leavetypeid, string employeeid)
+        {
+            var period = DateTime.Now.Year;
+            //  "Where" is a lambda expression that filters the array returned.
+            //  "Any" returns like "Is there any? T/F."
+            return FindAll().Where(q => q.EmployeeId == employeeid && q.LeaveTypeId == leavetypeid && q.Period == period).Any();
+        }
+
         public bool Create(LeaveAllocation entity)
         {
             _db.LeaveAllocations.Add(entity);

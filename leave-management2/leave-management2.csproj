@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20211130163950_AddedDefaultDaysAndPeriod.cs" />
+    <Compile Remove="Data\Migrations\20211130163950_AddedDefaultDaysAndPeriod.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211130180300_WhoopsOneMoreDefaultDays.cs" />
+    <Compile Remove="Data\Migrations\20211130180300_WhoopsOneMoreDefaultDays.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.19" />

@@ -18,7 +18,7 @@ namespace leave_management2.Models
         [Display(Name = "Default Number Of Days")]
         //  Takes a min and a max:
         [Range(1, 25, ErrorMessage = "Please Enter A Valid Number")]
-        public int MyProperty { get; set; }
+        public int DefaultDays { get; set; }
         //  Normally, it displays the variable name in the webpage. This adds a space btw "DateCreated".
         [Display(Name="Date Created")]
         //  The "?" here is bec u want to wait to set it, will be null at the form, and then u set it to the current date later.

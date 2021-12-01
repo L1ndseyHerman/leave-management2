@@ -26,6 +26,8 @@ namespace leave_management2.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
+                    MyProperty = table.Column<int>(nullable: false),
+                    DefaultDays = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
