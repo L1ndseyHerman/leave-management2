@@ -1,6 +1,7 @@
 ﻿using leave_management2.Contracts;
 using leave_management2.Data;
 using leave_management2.Data.Migrations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace leave_management2.Repository
 {
-    public class LeaveHistoryRepository : ILeaveHistoryRepository
+    public class LeaveRequestRepository : ILeaveRequestRepository
     {
 
         private readonly ApplicationDbContext _db;
 
-        public LeaveHistoryRepository(ApplicationDbContext db)
+        public LeaveRequestRepository(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -32,13 +33,13 @@ namespace leave_management2.Repository
 
         public ICollection<LeaveRequest> FindAll()
         {
-            var LeaveRequest = _db.LeaveRequests.ToList();
+            var LeaveRequest = _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).ToList();
             return LeaveRequest;
         }
 
         public LeaveRequest FindById(int id)
         {
-            var leaveHistory = _db.LeaveRequests.Find(id);
+            var leaveHistory = _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).FirstOrDefault(q => q.Id == id);
             return leaveHistory;
         }
 
