@@ -22,13 +22,21 @@ namespace leave_management2.Controllers
     {
         private readonly ILeaveRequestRepository _leaveRequestRepo;
         private readonly ILeaveTypeRepository _leaveTypeRepo;
+        private readonly ILeaveAllocationRepository _leaveAllocRepo;
         private readonly IMapper _mapper;
         private readonly UserManager<Employee> _userManager;
 
-        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepo, ILeaveTypeRepository leaveTypeRepo, IMapper mapper, UserManager<Employee> userManager)
+        public LeaveRequestController(
+            ILeaveRequestRepository leaveRequestRepo,
+            ILeaveTypeRepository leaveTypeRepo,
+            ILeaveAllocationRepository leaveAllocRepo,
+            IMapper mapper,
+            UserManager<Employee> userManager
+            )
         {
             _leaveRequestRepo = leaveRequestRepo;
             _leaveTypeRepo = leaveTypeRepo;
+            _leaveAllocRepo = leaveAllocRepo;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -58,37 +66,20 @@ namespace leave_management2.Controllers
             return View();
         }
 
-        //[Keyless]
         // GET: LeaveRequestController/Create
-        //[NotMapped]
         public ActionResult Create()
         {
             var leaveTypes = _leaveTypeRepo.FindAll();
             var leaveTypeItems = leaveTypes.Select(q => new SelectListItem
-            //var leaveTypeItems = leaveTypes.Select(q => new IEnumerable<LeaveRequest>
             {
-                //Id = q.Id,
-                //Key = q.Id,
                 Text = q.Name,
                 Value = q.Id.ToString()
-                //Text = q.Id.ToString(),
-                //Value = q.Name
             });
-
-            //  My code to fix his id-less problem:
-            //var leaveTypeItemsWithId = leaveTypes;
-            /*foreach (var item in leaveTypes)
-            {
-                item.Id = leaveTypes.LeaveTypeId;
-            }*/
-            //var leaveTypeIds = leaveTypes.Select(q => q.Id);
 
             var model = new CreateLeaveRequestVM
             {
                 LeaveTypes = leaveTypeItems
-                //LeaveTypes.Text = leaveTypeItems.Text
             };
-            //HasNoKey();
 
             return View(model);
         }
@@ -96,15 +87,70 @@ namespace leave_management2.Controllers
         // POST: LeaveRequestController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateLeaveRequestVM model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var startDate = Convert.ToDateTime(model.StartDate);
+                var endDate = Convert.ToDateTime(model.EndDate);
+                var leaveTypes = _leaveTypeRepo.FindAll();
+                var leaveTypeItems = leaveTypes.Select(q => new SelectListItem
+                {
+                    Text = q.Name,
+                    Value = q.Id.ToString()
+                });
+
+                model.LeaveTypes = leaveTypeItems;
+
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                //  This makes sure the startDate is less than the endDate!
+                if (DateTime.Compare(startDate, endDate) > 1)
+                {
+                    ModelState.AddModelError("", "Start Date cannot be further in the future than the End Date");
+                    return View(model);
+                }
+
+                var employee = _userManager.GetUserAsync(User).Result;
+                var allocation = _leaveAllocRepo.GetLeaveAllocationsByEmployeeAndType(employee.Id, model.LeaveTypeId);
+                //  This gets a double, so casting to an int:
+                int daysRequested = (int)(endDate.Date - startDate.Date).TotalDays;
+
+                if (daysRequested > allocation.NumberOfDays)
+                {
+                    ModelState.AddModelError("", "You Do Not Have Sufficient Days For This Request");
+                    return View(model);
+                }
+
+                var leaveRequestModel = new LeaveRequestVM
+                {
+                    RequestingEmployeeId = employee.Id,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Approved = null,
+                    DateRequested = DateTime.Now,
+                    DateActioned = DateTime.Now,
+                    LeaveTypeId = model.LeaveTypeId
+                };
+
+                var leaveRequest = _mapper.Map<LeaveRequest>(leaveRequestModel);
+                var isSuccess = _leaveRequestRepo.Create(leaveRequest);
+
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong with submitting your record");
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index), "Home");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong");
+                return View(model);
             }
         }
 

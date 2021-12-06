@@ -23,8 +23,6 @@ namespace leave_management2.Models
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public LeaveTypeVM LeaveType { get; set; }
-
-        //  Not sure if any of these should be here still:
         public int LeaveTypeId { get; set; }
         public DateTime DateRequested { get; set; }
         public DateTime DateActioned { get; set; }
@@ -35,28 +33,20 @@ namespace leave_management2.Models
 
     public class CreateLeaveRequestVM
     {
-        [Key]
-        [Display(Name = "Leave Type")]
-        public int LeaveTypeId { get; set; }
         [Display(Name = "Start Date")]
         [Required]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
         [Display(Name = "End Date")]
         [Required]
-        public DateTime EndDate { get; set; }
-        //  Will this fix it?
-        //[NotMapped]
+        public string EndDate { get; set; }
         public IEnumerable<SelectListItem> LeaveTypes { get; set; }
-        //[Display(Name = "Leave Type")]
-        //  Will this fix the error in LeaveRequestController.cs?
-        //[Key]
-        //public int LeaveTypeId { get; set; }
+        [Display(Name = "Leave Type")]
+        public int LeaveTypeId { get; set; }
     }
 
     //  Not sure if this class should be here still?
     //  He mentions that it's his preferance to create mult classes in the same file, but u can do 1 class per file and that would work too. 
     //  Seems like most ppl prefer 1 class per file.
-    //[NotMapped]
     public class AdminLeaveRequestViewVM
     {
         [Display(Name = "Total Number Of Requests")]
