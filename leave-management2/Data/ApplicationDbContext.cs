@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using leave_management2.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace leave_management2.Data
 {
@@ -20,5 +21,7 @@ namespace leave_management2.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<leave_management2.Models.LeaveRequestVM> LeaveRequestVM { get; set; }
+        //ModelBuilder.Ignore<SelectListItem>();
+        //ModelBuilder.Ignore<SelectListGroup>();
     }
 }

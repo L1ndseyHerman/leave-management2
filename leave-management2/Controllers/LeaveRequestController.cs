@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using leave_management2.Contracts;
 using leave_management2.Data;
+using leave_management2.Data.Migrations;
 using leave_management2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,12 +21,14 @@ namespace leave_management2.Controllers
     public class LeaveRequestController : Controller
     {
         private readonly ILeaveRequestRepository _leaveRequestRepo;
+        private readonly ILeaveTypeRepository _leaveTypeRepo;
         private readonly IMapper _mapper;
         private readonly UserManager<Employee> _userManager;
 
-        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepo, IMapper mapper, UserManager<Employee> userManager)
+        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepo, ILeaveTypeRepository leaveTypeRepo, IMapper mapper, UserManager<Employee> userManager)
         {
             _leaveRequestRepo = leaveRequestRepo;
+            _leaveTypeRepo = leaveTypeRepo;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -53,10 +58,39 @@ namespace leave_management2.Controllers
             return View();
         }
 
+        //[Keyless]
         // GET: LeaveRequestController/Create
+        //[NotMapped]
         public ActionResult Create()
         {
-            return View();
+            var leaveTypes = _leaveTypeRepo.FindAll();
+            var leaveTypeItems = leaveTypes.Select(q => new SelectListItem
+            //var leaveTypeItems = leaveTypes.Select(q => new IEnumerable<LeaveRequest>
+            {
+                //Id = q.Id,
+                //Key = q.Id,
+                Text = q.Name,
+                Value = q.Id.ToString()
+                //Text = q.Id.ToString(),
+                //Value = q.Name
+            });
+
+            //  My code to fix his id-less problem:
+            //var leaveTypeItemsWithId = leaveTypes;
+            /*foreach (var item in leaveTypes)
+            {
+                item.Id = leaveTypes.LeaveTypeId;
+            }*/
+            //var leaveTypeIds = leaveTypes.Select(q => q.Id);
+
+            var model = new CreateLeaveRequestVM
+            {
+                LeaveTypes = leaveTypeItems
+                //LeaveTypes.Text = leaveTypeItems.Text
+            };
+            //HasNoKey();
+
+            return View(model);
         }
 
         // POST: LeaveRequestController/Create
