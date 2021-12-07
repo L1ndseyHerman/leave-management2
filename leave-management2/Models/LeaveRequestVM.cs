@@ -59,4 +59,10 @@ namespace leave_management2.Models
         public int RejectedRequests { get; set; }
         public List<LeaveRequestVM> LeaveRequests { get; set; }
     }
+
+    public class EmployeeLeaveRequestViewVM
+    {
+        public List<LeaveAllocationVM> LeaveAllocations { get; set; }
+        public List<LeaveRequestVM> LeaveRequests { get; set; }
+    }
 }
