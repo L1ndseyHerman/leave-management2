@@ -29,6 +29,10 @@ namespace leave_management2.Models
         public bool? Approved { get; set; }
         public EmployeeVM ApprovedBy { get; set; }
         public string ApprovedById { get; set; }
+        public bool Cancelled { get; set; }
+        [Display(Name = "Employee Comments")]
+        [MaxLength(300)]
+        public string RequestComments { get; set; }
     }
 
     public class CreateLeaveRequestVM
@@ -42,6 +46,10 @@ namespace leave_management2.Models
         public IEnumerable<SelectListItem> LeaveTypes { get; set; }
         [Display(Name = "Leave Type")]
         public int LeaveTypeId { get; set; }
+        public bool Cancelled { get; set; }
+        [Display(Name = "Employee Comments")]
+        [MaxLength(300)]
+        public string RequestComments { get; set; }
     }
 
     //  Not sure if this class should be here still?

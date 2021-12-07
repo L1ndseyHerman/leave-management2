@@ -20,9 +20,11 @@ namespace leave_management2.Data.Migrations
         public LeaveType LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
         public DateTime DateRequested { get; set; }
+        public string RequestComments { get; set; }
         public DateTime DateActioned { get; set; }
         //  The "?" means null is allowed, could be true, false, or null (pending).
         public bool? Approved { get; set; }
+        public bool Cancelled { get; set; }
         //  Want to know which other employee approved your leave.
         [ForeignKey("ApprovedById")]
         public Employee ApprovedBy { get; set; }
