@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+//  Need this for more async options:
+using Microsoft.EntityFrameworkCore;
 
 namespace leave_management2.Repository
 {
@@ -18,61 +20,62 @@ namespace leave_management2.Repository
             _db = db;
         }
 
-        public bool Create(LeaveType entity)
+        //  Added "async", "Task<>", "await", and "Add()" to "AddAsync()" 
+        public async Task<bool> Create(LeaveType entity)
         {
-            _db.LeaveTypes.Add(entity);
-            return Save();
+            await _db.LeaveTypes.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveType entity)
+        public async Task<bool> Delete(LeaveType entity)
         {
             _db.LeaveTypes.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<LeaveType> FindAll()
+        public async Task<ICollection<LeaveType>> FindAll()
         {
             //  Gets a List (like ArrayList in Java) of everything in the table.
             //  Wait, why is it "var"? Doesn't C# need to be strongly-typed?
-            var leaveTypes = _db.LeaveTypes.ToList();
+            var leaveTypes = await _db.LeaveTypes.ToListAsync();
             return leaveTypes;
         }
 
-        public LeaveType FindById(int id)
+        public async Task<LeaveType> FindById(int id)
         {
             //  "Find()" is like "indexOf()".
             //  Could do "FirstOfDefault()" like at OnShift, but he doesn't tho.
-            var leaveType = _db.LeaveTypes.Find(id);
+            var leaveType = await _db.LeaveTypes.FindAsync(id);
             return leaveType;
         }
 
-        public ICollection<LeaveType> GetEmployeesByLeaveType(int id)
+        public async Task<ICollection<LeaveType>> GetEmployeesByLeaveType(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
             //  This would check if there are any rows in the table:
             //var exists = _db.LeaveTypes.Any();
 
             //  q = a row. Does any row have an id that matches the id parameter passed into the method? Return t/f.
-            var exists = _db.LeaveTypes.Any(q => q.Id == id);
+            var exists = await _db.LeaveTypes.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
             //  Should always change 1+ things, check if that's true:
             return changes > 0;
         }
 
-        public bool Update(LeaveType entity)
+        public async Task<bool> Update(LeaveType entity)
         {
             _db.LeaveTypes.Update(entity);
             //  Did this save correctly? Return T/F.
-            return Save();
+            return await Save();
         }
     }
 }
