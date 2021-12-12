@@ -40,6 +40,10 @@ namespace leave_management2
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 
+            //  No clue why this is Transient :(
+            //  Google says it's one option: AddScoped and AddSingleton are the other two.
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             //  New! Need for the AutoMapper:
             services.AddAutoMapper(typeof(Maps));
 
