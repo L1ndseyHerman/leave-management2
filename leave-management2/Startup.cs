@@ -3,6 +3,7 @@ using leave_management2.Contracts;
 using leave_management2.Data;
 using leave_management2.Mappings;
 using leave_management2.Repository;
+using leave_management2.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,10 @@ namespace leave_management2
             //  No clue why this is Transient :(
             //  Google says it's one option: AddScoped and AddSingleton are the other two.
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            //  Email Settings Section
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             //  New! Need for the AutoMapper:
             services.AddAutoMapper(typeof(Maps));

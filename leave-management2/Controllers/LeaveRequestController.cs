@@ -3,6 +3,7 @@ using leave_management2.Contracts;
 using leave_management2.Data;
 using leave_management2.Data.Migrations;
 using leave_management2.Models;
+using leave_management2.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ namespace leave_management2.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<Employee> _userManager;
 
         public LeaveRequestController(
@@ -222,6 +224,9 @@ namespace leave_management2.Controllers
                 await _unitOfWork.LeaveRequests.Create(leaveRequest);
                 await _unitOfWork.Save();
 
+                //  Send Email to supervisor and requesting user
+                //_emailSender.SendEmailAsync("admin@localhost.com", "New Leave Request", $"Please review this leave request. <a href='UrlOfApp/{leaveRequest.Id}'>Click Here");
+
                 return RedirectToAction(nameof(Index), "Home");
             }
             catch (Exception ex)
@@ -237,6 +242,8 @@ namespace leave_management2.Controllers
             leaveRequest.Cancelled = true;
             _unitOfWork.LeaveRequests.Update(leaveRequest);
             await _unitOfWork.Save();
+
+            //  Send Email to supervisor and requesting user
             return RedirectToAction("MyLeave");
         }
 
