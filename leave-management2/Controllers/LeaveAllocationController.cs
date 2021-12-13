@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +88,7 @@ namespace leave_management2.Controllers
             //var allocations = _mapper.Map<List<LeaveAllocationVM>>(await _leaveallocationrepo.GetLeaveAllocationsByEmployee(id));
             var records = await _unitOfWork.LeaveAllocations.FindAll(
                 expression: q => q.EmployeeId == id && q.Period == period,
-                includes: new List<string> { "LeaveType" }
+                includes: q => q.Include(x => x.LeaveType)
             );
 
             var allocations = _mapper.Map<List<LeaveAllocationVM>>(records);
@@ -126,7 +127,7 @@ namespace leave_management2.Controllers
         {
             //var leaveallocation = await _leaveallocationrepo.FindById(id);
             var leaveallocation = await _unitOfWork.LeaveAllocations.Find(q => q.Id == id,
-                includes: new List<string> { "Employee", "LeaveType" });
+                includes: q => q.Include(x => x.Employee).Include(x => x.LeaveType));
             var model = _mapper.Map<EditLeaveAllocationVM>(leaveallocation);
             return View(model);
         }

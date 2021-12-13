@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -41,7 +42,9 @@ namespace leave_management2.Controllers
         public async Task<ActionResult> Index()
         {
             var leaveRequests = await _unitOfWork.LeaveRequests.FindAll(
-                includes: new List<string> { "RequestingEmployee", "LeaveType" });
+                includes: q => q.Include(x => x.RequestingEmployee).Include(x => x.LeaveType)
+            );
+
             var leaveRequestsModel = _mapper.Map<List<LeaveRequestVM>>(leaveRequests);
             var model = new AdminLeaveRequestViewVM
             {
@@ -61,7 +64,7 @@ namespace leave_management2.Controllers
             var employeeid = employee.Id;
 
             var employeeAllocations = await _unitOfWork.LeaveAllocations.FindAll(q => q.EmployeeId == employeeid,
-                includes: new List<string> { "LeaveType" });
+                includes: q => q.Include(x => x.LeaveType));
 
             var employeeRequests = await _unitOfWork.LeaveRequests.FindAll(q => q.RequestingEmployeeId == employeeid);
 
@@ -81,7 +84,7 @@ namespace leave_management2.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var leaveRequest = await _unitOfWork.LeaveRequests.Find(q => q.Id == id,
-                includes: new List<string> { "ApprovedBy", "RequestingEmployee", "LeaveType" });
+                includes: q => q.Include(x => x.RequestingEmployee).Include(x => x.LeaveType).Include(x => x.ApprovedBy));
             var model = _mapper.Map<LeaveRequestVM>(leaveRequest);
             return View(model);
         }
