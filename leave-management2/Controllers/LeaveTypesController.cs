@@ -138,25 +138,11 @@ namespace leave_management2.Controllers
             }
         }
 
-        // GET: LeaveTypesController/Delete/5
-        public async Task<ActionResult> Delete(int id)
-        {
-            //var leavetype = await _repo.FindById(id);
-            var leavetype = await _unitOfWork.LeaveTypes.Find(expression: q => q.Id == id);
-            if (leavetype == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.LeaveTypes.Delete(leavetype);
-            await _unitOfWork.Save();
-            return RedirectToAction(nameof(Index));
-        }
-
         // POST: LeaveTypesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         //  Only need the model so that it has another parameter, otherwise C# doesn't know if it should call this Delete method or the other one.
-        public async Task<ActionResult> Delete(int id, LeaveTypeVM model)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
@@ -168,12 +154,11 @@ namespace leave_management2.Controllers
                 }
                 _unitOfWork.LeaveTypes.Delete(leavetype);
                 await _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View(model);
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
